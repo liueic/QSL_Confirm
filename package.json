@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check-deploy": "bash scripts/check-deployment.sh",
+    "generate-secret": "node -e \"console.log('\\nGenerated QSL_TOKEN_SECRET:\\n' + require('crypto').randomBytes(32).toString('hex') + '\\n')\""
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

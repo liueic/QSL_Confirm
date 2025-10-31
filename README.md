@@ -4,6 +4,13 @@
 
 一个现代化的业余无线电 QSL 卡片邮寄确认系统，使用基于 HMAC 的签名技术确保确认的真实性和安全性。
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/你的用户名/hamqsl-mailconfirm)
+
+## 🚀 快速部署
+
+- **[10 分钟快速部署指南](./DEPLOY.md)** - 最快上手方式
+- **[详细 Vercel 部署文档](./docs/VERCEL_DEPLOYMENT.md)** - 完整部署说明
+
 ## 核心功能
 
 ### 🔐 Token 生成与 HMAC 签名
@@ -275,22 +282,35 @@ const isValid = timingSafeEqual(providedSignature, expectedSignature);
 
 ## 部署
 
-### Vercel 部署
+### 📦 Vercel 一键部署
 
-1. Fork 此仓库
-2. 在 Vercel 导入项目
-3. 配置环境变量
-4. 部署
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/你的用户名/hamqsl-mailconfirm)
 
-### 环境变量配置
+点击上方按钮，按照提示配置环境变量即可完成部署！
+
+### 📖 部署文档
+
+- **[快速部署指南 (10分钟)](./DEPLOY.md)** - 适合快速上手
+- **[完整部署文档](./docs/VERCEL_DEPLOYMENT.md)** - 详细步骤和最佳实践
+
+### 🔑 环境变量配置
 
 在 Vercel 项目设置中添加以下环境变量：
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `QSL_TOKEN_SECRET`
-- `QSL_TOKEN_EXPIRY_DAYS`
-- `NEXT_PUBLIC_APP_URL`
+
+| 变量名 | 说明 | 示例 |
+|--------|------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 项目 URL | `https://xxx.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名密钥 | `eyJhbGc...` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Service Role 密钥 | `eyJhbGc...` |
+| `QSL_TOKEN_SECRET` | Token 签名密钥（至少32字节） | 使用下方命令生成 |
+| `QSL_TOKEN_EXPIRY_DAYS` | Token 有效期（天数） | `365` |
+| `NEXT_PUBLIC_APP_URL` | 应用域名 | `https://your-app.vercel.app` |
+
+**生成 Token Secret**:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
 ## 安全建议
 
