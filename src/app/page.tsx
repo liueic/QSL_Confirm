@@ -1,22 +1,39 @@
-export default function Home() {
+import { useTranslations } from 'next-intl';
+import { getLocale } from 'next-intl/server';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+export default async function Home() {
+  const locale = await getLocale();
+  
+  return (
+    <HomeContent locale={locale} />
+  );
+}
+
+function HomeContent({ locale }: { locale: string }) {
+  const t = useTranslations();
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="container mx-auto px-4 py-16">
+        <div className="flex justify-end mb-4">
+          <LanguageSwitcher currentLocale={locale} />
+        </div>
         <header className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            HamQSL MailConfirm
+            {t('home.title')}
           </h1>
           <p className="text-xl text-gray-600 mb-2">
-            实体 QSL 卡邮寄确认系统
+            {t('home.subtitle')}
           </p>
           <p className="text-lg text-gray-500">
-            Physical QSL Card Mail Confirmation System
+            {t('home.subtitleEn')}
           </p>
         </header>
 
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">系统功能</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('home.systemFeatures')}</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="flex items-start">
@@ -26,8 +43,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">生成确认码</h3>
-                    <p className="text-sm text-gray-600">为每张 QSL 卡生成唯一的确认码和二维码</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.generateToken')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.generateTokenDesc')}</p>
                   </div>
                 </div>
                 
@@ -38,8 +55,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">HMAC 防伪签名</h3>
-                    <p className="text-sm text-gray-600">基于密钥的签名验证，防止伪造</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.hmacSecurity')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.hmacSecurityDesc')}</p>
                   </div>
                 </div>
                 
@@ -50,8 +67,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">扫码确认</h3>
-                    <p className="text-sm text-gray-600">收卡者扫描二维码或输入短码确认收到</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.scanConfirm')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.scanConfirmDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -64,8 +81,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">批量处理</h3>
-                    <p className="text-sm text-gray-600">支持批量生成和导出确认码</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.batchProcess')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.batchProcessDesc')}</p>
                   </div>
                 </div>
                 
@@ -76,8 +93,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">审计日志</h3>
-                    <p className="text-sm text-gray-600">完整记录每次生成、扫描和确认操作</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.auditLog')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.auditLogDesc')}</p>
                   </div>
                 </div>
                 
@@ -88,8 +105,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">隐私保护</h3>
-                    <p className="text-sm text-gray-600">最小化数据收集，保护用户隐私</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t('home.privacyProtection')}</h3>
+                    <p className="text-sm text-gray-600">{t('home.privacyProtectionDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -103,10 +120,10 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">发卡者</h3>
-              <p className="text-sm text-gray-600 mb-4">生成确认码并打印到 QSL 卡上</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.senderRole')}</h3>
+              <p className="text-sm text-gray-600 mb-4">{t('home.senderRoleDesc')}</p>
               <button className="text-blue-600 font-medium hover:text-blue-700">
-                了解更多 →
+                {t('home.learnMore')}
               </button>
             </div>
 
@@ -116,10 +133,10 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">邮寄</h3>
-              <p className="text-sm text-gray-600 mb-4">通过邮政寄送带确认码的卡片</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.mailingRole')}</h3>
+              <p className="text-sm text-gray-600 mb-4">{t('home.mailingRoleDesc')}</p>
               <button className="text-green-600 font-medium hover:text-green-700">
-                了解更多 →
+                {t('home.learnMore')}
               </button>
             </div>
 
@@ -129,28 +146,28 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">收卡者</h3>
-              <p className="text-sm text-gray-600 mb-4">扫描二维码确认收到卡片</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('home.receiverRole')}</h3>
+              <p className="text-sm text-gray-600 mb-4">{t('home.receiverRoleDesc')}</p>
               <a 
                 href="/confirm"
                 className="text-purple-600 font-medium hover:text-purple-700"
               >
-                立即确认 →
+                {t('home.confirmNow')}
               </a>
             </div>
           </div>
 
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 text-white text-center">
-            <h2 className="text-3xl font-bold mb-4">开始使用</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('home.getStarted')}</h2>
             <p className="text-lg mb-6 text-blue-100">
-              为您的 QSL 卡片添加可验证的确认功能
+              {t('home.getStartedDesc')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="/admin"
                 className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
               >
-                管理后台
+                {t('home.adminPanel')}
               </a>
               <a
                 href="https://github.com"
@@ -158,7 +175,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition-colors border-2 border-white"
               >
-                查看文档
+                {t('home.viewDocs')}
               </a>
             </div>
           </div>
@@ -166,10 +183,10 @@ export default function Home() {
 
         <footer className="text-center mt-16 text-gray-600">
           <p className="mb-2">
-            Built with Next.js, Supabase, and TailwindCSS
+            {t('home.builtWith')}
           </p>
           <p className="text-sm">
-            © 2024 HamQSL MailConfirm - Open Source Project
+            {t('home.copyright')}
           </p>
         </footer>
       </div>

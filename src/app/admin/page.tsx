@@ -1,7 +1,9 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
+import { getTranslations } from 'next-intl/server';
 
 export default async function AdminDashboard() {
   const supabase = await createServerSupabaseClient();
+  const t = await getTranslations('admin');
   
   const { data: { user } } = await supabase.auth.getUser();
   
@@ -20,18 +22,18 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { name: 'Total QSOs', value: totalQsos || 0, color: 'bg-blue-500' },
-    { name: 'Mailed', value: mailedQsos || 0, color: 'bg-indigo-500' },
-    { name: 'Confirmed', value: confirmedQsos || 0, color: 'bg-green-500' },
-    { name: 'Total Tokens', value: totalTokens || 0, color: 'bg-purple-500' },
-    { name: 'Used Tokens', value: usedTokens || 0, color: 'bg-pink-500' },
+    { name: t('totalQsos'), value: totalQsos || 0, color: 'bg-blue-500' },
+    { name: t('mailed'), value: mailedQsos || 0, color: 'bg-indigo-500' },
+    { name: t('confirmed'), value: confirmedQsos || 0, color: 'bg-green-500' },
+    { name: t('totalTokens'), value: totalTokens || 0, color: 'bg-purple-500' },
+    { name: t('usedTokens'), value: usedTokens || 0, color: 'bg-pink-500' },
   ];
 
   const confirmationRate = totalTokens ? ((usedTokens || 0) / totalTokens * 100).toFixed(1) : 0;
 
   return (
     <div className="px-4 py-6 sm:px-0">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('dashboard')}</h2>
       
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (
@@ -58,12 +60,12 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="mt-8 bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Confirmation Rate</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">{t('confirmationRate')}</h3>
         <div className="relative pt-1">
           <div className="flex mb-2 items-center justify-between">
             <div>
               <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
-                Progress
+                {t('progress')}
               </span>
             </div>
             <div className="text-right">
@@ -80,57 +82,57 @@ export default async function AdminDashboard() {
           </div>
         </div>
         <p className="text-sm text-gray-600">
-          {usedTokens || 0} out of {totalTokens || 0} tokens have been confirmed
+          {t('tokensConfirmed', { used: usedTokens || 0, total: totalTokens || 0 })}
         </p>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{t('quickActions')}</h3>
           <div className="space-y-3">
             <a
               href="/admin/qsos/new"
               className="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
             >
-              Add New QSO
+              {t('addNewQSO')}
             </a>
             <a
               href="/admin/batch"
               className="block w-full text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
-              Batch Generate Tokens
+              {t('batchGenerateTokens')}
             </a>
             <a
               href="/admin/logs"
               className="block w-full text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
-              View Activity Logs
+              {t('viewActivityLogs')}
             </a>
           </div>
         </div>
 
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">System Status</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{t('systemStatus')}</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Database</span>
+              <span className="text-sm text-gray-600">{t('database')}</span>
               <span className="flex items-center text-sm font-medium text-green-600">
                 <span className="h-2 w-2 bg-green-600 rounded-full mr-2"></span>
-                Connected
+                {t('connected')}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Authentication</span>
+              <span className="text-sm text-gray-600">{t('authentication')}</span>
               <span className="flex items-center text-sm font-medium text-green-600">
                 <span className="h-2 w-2 bg-green-600 rounded-full mr-2"></span>
-                Active
+                {t('active')}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">API</span>
+              <span className="text-sm text-gray-600">{t('api')}</span>
               <span className="flex items-center text-sm font-medium text-green-600">
                 <span className="h-2 w-2 bg-green-600 rounded-full mr-2"></span>
-                Operational
+                {t('operational')}
               </span>
             </div>
           </div>

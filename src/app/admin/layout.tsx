@@ -1,62 +1,68 @@
 import Link from 'next/link';
 import AuthGuard from '@/components/AuthGuard';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 // 强制动态渲染，因为需要用户认证
 export const dynamic = 'force-dynamic';
 
-async function AdminNav({ userEmail }: { userEmail?: string | null }) {
+async function AdminNav({ userEmail, locale }: { userEmail?: string | null, locale: string }) {
+  const t = await getTranslations('admin');
+  const tCommon = await getTranslations('common');
+
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-blue-600">HamQSL Admin</h1>
+              <h1 className="text-xl font-bold text-blue-600">{t('title')}</h1>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link
                 href="/admin"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Dashboard
+                {t('dashboard')}
               </Link>
               <Link
                 href="/admin/qsos"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                QSOs
+                {t('qsos')}
               </Link>
               <Link
                 href="/admin/tokens"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Tokens
+                {t('tokens')}
               </Link>
               <Link
                 href="/admin/logs"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Logs
+                {t('logs')}
               </Link>
               <Link
                 href="/admin/batch"
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Batch Operations
+                {t('batchOps')}
               </Link>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            <LanguageSwitcher currentLocale={locale} />
             {userEmail && (
-              <span className="text-sm text-gray-600 mr-4">{userEmail}</span>
+              <span className="text-sm text-gray-600">{userEmail}</span>
             )}
             <form action="/api/auth/logout" method="POST">
               <button
                 type="submit"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
-                Logout
+                {tCommon('logout')}
               </button>
             </form>
           </div>
@@ -81,10 +87,12 @@ export default async function AdminLayout({
     // 如果服务端无法获取用户，由客户端组件处理
   }
 
+  const locale = await getLocale();
+
   return (
     <AuthGuard>
       <div className="min-h-screen bg-gray-100">
-        <AdminNav userEmail={userEmail} />
+        <AdminNav userEmail={userEmail} locale={locale} />
         <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {children}
         </main>
