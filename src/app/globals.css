@@ -1,147 +1,158 @@
 @import "tailwindcss";
 
-/* 🍬 糖果色调色板 - Candy Color Palette */
+/* 🎨 Flat Fall Guys Theme - Light & Dark Mode */
 :root {
-  /* 主要糖果色 */
-  --candy-pink: #ff6ec7;
-  --candy-purple: #bd93ff;
-  --candy-blue: #6eb5ff;
-  --candy-cyan: #50e3c2;
-  --candy-yellow: #ffd93d;
-  --candy-orange: #ffb74d;
-  --candy-mint: #b4f8c8;
-  --candy-peach: #ffa6c9;
+  /* 🌈 Primary Colors */
+  --color-primary: #B58BFF;
+  --color-accent: #7BE0F2;
+  --color-secondary: #F9A8D4;
   
-  /* 背景色 */
-  --bg-primary: #fff5f7;
-  --bg-secondary: #ffe6f0;
-  --bg-tertiary: #fdf0ff;
+  /* 📄 Background & Surface */
+  --color-bg: #FAF9FF;
+  --color-surface: #FFFFFF;
   
-  /* 文字色 */
-  --text-primary: #6b4e71;
-  --text-secondary: #9775a5;
-  --text-light: #c4a4d1;
+  /* 🖋️ Text Colors */
+  --color-text: #1C1630;
+  --color-text-secondary: #6B6780;
   
-  /* 强调色 */
-  --accent-primary: var(--candy-pink);
-  --accent-secondary: var(--candy-purple);
+  /* 🪄 Border & Dividers */
+  --color-border: #E4E0F2;
+  
+  /* 🍬 Legacy candy colors for compatibility */
+  --candy-pink: #F9A8D4;
+  --candy-purple: #B58BFF;
+  --candy-blue: #7BE0F2;
+  --candy-cyan: #61D4E9;
+  --candy-yellow: #FFD93D;
+  --candy-orange: #FFB26B;
+  --candy-mint: #7BE0F2;
+  --candy-peach: #FFB26B;
+  
+  /* Legacy variables */
+  --bg-primary: var(--color-bg);
+  --bg-secondary: var(--color-surface);
+  --bg-tertiary: var(--color-surface);
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --text-light: var(--color-text-secondary);
+  --accent-primary: var(--color-primary);
+  --accent-secondary: var(--color-accent);
+}
+
+/* 🌙 Dark Mode Colors */
+.dark {
+  --color-primary: #A68BFF;
+  --color-accent: #61D4E9;
+  --color-secondary: #E58DC2;
+  --color-bg: #161320;
+  --color-surface: #1E1A2A;
+  --color-text: #F4F1FA;
+  --color-text-secondary: #A29BBF;
+  --color-border: #2E2940;
+  
+  /* Update legacy variables for dark mode */
+  --candy-pink: #E58DC2;
+  --candy-purple: #A68BFF;
+  --candy-blue: #61D4E9;
+  --candy-cyan: #61D4E9;
+  --candy-mint: #61D4E9;
+  
+  --bg-primary: var(--color-bg);
+  --bg-secondary: var(--color-surface);
+  --bg-tertiary: var(--color-surface);
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --text-light: var(--color-text-secondary);
 }
 
 @theme inline {
-  --color-background: var(--bg-primary);
-  --color-foreground: var(--text-primary);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
   --font-sans: var(--font-pixel-sans);
   --font-mono: var(--font-pixel-mono);
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: 'Baloo 2', 'Comic Sans MS', cursive, system-ui;
   image-rendering: -webkit-optimize-contrast;
 }
 
-/* 🎨 像素风格滚动条 - Pixel Scrollbar */
+/* 🎨 Flat Scrollbar - 扁平滚动条 */
 ::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-  border: 3px solid var(--candy-purple);
+  background: var(--color-bg);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+  background: var(--color-primary);
   border-radius: 10px;
-  border: 3px solid var(--bg-secondary);
-  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.5),
-              inset -2px -2px 0 rgba(0, 0, 0, 0.2);
+  border: 3px solid var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--candy-purple), var(--candy-blue));
+  background: var(--color-accent);
 }
 
-/* 🔲 像素边框效果 - Pixel Border */
+/* 🔲 Flat Border - 扁平边框 */
 .pixel-border {
   border: 4px solid currentColor;
-  box-shadow: 
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.4),
-    inset -2px -2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .pixel-border-thick {
   border: 6px solid currentColor;
-  box-shadow: 
-    6px 6px 0 rgba(0, 0, 0, 0.2),
-    inset 3px 3px 0 rgba(255, 255, 255, 0.5),
-    inset -3px -3px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* 💡 糖果色焦点效果 - Candy Focus */
+/* 💡 Flat Focus - 扁平焦点效果 */
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--candy-purple) !important;
-  box-shadow: 
-    0 0 0 4px rgba(189, 147, 255, 0.3),
-    4px 4px 0 var(--candy-pink),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
+  border-color: var(--color-accent) !important;
+  outline: 4px solid var(--color-accent);
+  outline-offset: -4px;
 }
 
-/* 🎯 按钮样式 - Cute Button */
+/* 🎯 Flat Button - 扁平按钮 */
 .btn-candy {
   border: 4px solid;
-  border-radius: 16px;
-  box-shadow: 
-    4px 4px 0 rgba(0, 0, 0, 0.2),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.5),
-    inset -2px -2px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 1.5rem;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-candy:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 
-    6px 6px 0 rgba(0, 0, 0, 0.25),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.6),
-    inset -2px -2px 0 rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+  opacity: 0.9;
 }
 
 .btn-candy:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: 
-    2px 2px 0 rgba(0, 0, 0, 0.2),
-    inset 2px 2px 0 rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
 }
 
-/* 🍭 卡片样式 - Candy Card */
+/* 🍭 Flat Card - 扁平卡片 */
 .card-candy {
   border: 4px solid;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-  box-shadow: 
-    6px 6px 0 rgba(0, 0, 0, 0.15),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.8),
-    inset -2px -2px 0 rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  background: var(--color-surface);
 }
 
-/* ✨ 闪烁动画 - Sparkle */
+/* ✨ Flat Animations - 扁平动画 */
+
+/* Sparkle - 闪烁 */
 @keyframes sparkle {
   0%, 100% {
     transform: scale(1) rotate(0deg);
     opacity: 1;
   }
   50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 0.8;
+    transform: scale(1.1) rotate(180deg);
+    opacity: 0.85;
   }
 }
 
@@ -149,15 +160,13 @@ select:focus {
   animation: sparkle 2s ease-in-out infinite;
 }
 
-/* 🌈 彩虹跳动 - Bounce Rainbow */
+/* Bounce - 弹跳 */
 @keyframes bounce-rainbow {
   0%, 100% {
     transform: translateY(0);
-    filter: hue-rotate(0deg);
   }
   50% {
     transform: translateY(-10px);
-    filter: hue-rotate(180deg);
   }
 }
 
@@ -165,19 +174,13 @@ select:focus {
   animation: bounce-rainbow 1.5s ease-in-out infinite;
 }
 
-/* 💖 脉冲发光 - Candy Pulse */
+/* Pulse - 脉冲（仅透明度变化） */
 @keyframes candy-pulse {
   0%, 100% {
-    box-shadow: 
-      0 0 20px rgba(255, 110, 199, 0.5),
-      0 0 40px rgba(189, 147, 255, 0.3),
-      inset 2px 2px 0 rgba(255, 255, 255, 0.5);
+    opacity: 1;
   }
   50% {
-    box-shadow: 
-      0 0 30px rgba(255, 110, 199, 0.8),
-      0 0 60px rgba(189, 147, 255, 0.5),
-      inset 2px 2px 0 rgba(255, 255, 255, 0.6);
+    opacity: 0.7;
   }
 }
 
@@ -185,13 +188,13 @@ select:focus {
   animation: candy-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* 🎪 摇摆动画 - Wiggle */
+/* Wiggle - 摇摆 */
 @keyframes wiggle {
   0%, 100% {
-    transform: rotate(-3deg);
+    transform: rotate(-2deg);
   }
   50% {
-    transform: rotate(3deg);
+    transform: rotate(2deg);
   }
 }
 
@@ -199,66 +202,111 @@ select:focus {
   animation: wiggle 1s ease-in-out infinite;
 }
 
-/* 🔮 渐变背景 - Gradient Background */
+/* 🔮 Flat Gradient Background - 扁平渐变背景 */
 .bg-candy-gradient {
   background: linear-gradient(
     135deg,
-    var(--candy-pink) 0%,
-    var(--candy-purple) 25%,
-    var(--candy-blue) 50%,
-    var(--candy-cyan) 75%,
-    var(--candy-mint) 100%
+    var(--color-secondary) 0%,
+    var(--color-primary) 50%,
+    var(--color-accent) 100%
   );
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
 }
 
+/* 可选：轻微的颜色过渡动画 */
 @keyframes gradient-shift {
   0% {
-    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
   }
   50% {
-    background-position: 100% 50%;
+    filter: hue-rotate(10deg);
   }
   100% {
-    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
   }
 }
 
-/* 🎨 像素点图案背景 - Pixel Dots Pattern */
+/* 🎨 Pixel Dots Pattern - 像素点图案背景 */
 .bg-pixel-dots {
   background-image: 
-    radial-gradient(circle, var(--candy-pink) 2px, transparent 2px),
-    radial-gradient(circle, var(--candy-purple) 2px, transparent 2px);
+    radial-gradient(circle, var(--color-secondary) 2px, transparent 2px),
+    radial-gradient(circle, var(--color-primary) 2px, transparent 2px);
   background-size: 40px 40px;
   background-position: 0 0, 20px 20px;
-  opacity: 0.15;
+  opacity: 0.1;
 }
 
-/* ⭐ 星星装饰 - Stars */
+/* ⭐ Stars Decoration - 星星装饰 */
 .stars {
   background-image: 
     radial-gradient(2px 2px at 20px 30px, var(--candy-yellow), transparent),
-    radial-gradient(2px 2px at 60px 70px, var(--candy-pink), transparent),
-    radial-gradient(1px 1px at 50px 50px, var(--candy-cyan), transparent),
-    radial-gradient(1px 1px at 130px 80px, var(--candy-purple), transparent),
+    radial-gradient(2px 2px at 60px 70px, var(--color-secondary), transparent),
+    radial-gradient(1px 1px at 50px 50px, var(--color-accent), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--color-primary), transparent),
     radial-gradient(2px 2px at 90px 10px, var(--candy-orange), transparent);
   background-repeat: repeat;
   background-size: 200px 100px;
-  opacity: 0.6;
+  opacity: 0.4;
   animation: stars-twinkle 3s ease-in-out infinite;
 }
 
 @keyframes stars-twinkle {
   0%, 100% {
-    opacity: 0.6;
+    opacity: 0.4;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.2;
   }
 }
 
-/* Smooth transitions */
+/* 🎯 Smooth Flat Transitions - 扁平过渡 */
 * {
-  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🌟 Utility Classes - 工具类 */
+
+/* Flat rounded corners */
+.rounded-flat {
+  border-radius: 1rem;
+}
+
+.rounded-flat-lg {
+  border-radius: 1.5rem;
+}
+
+.rounded-flat-xl {
+  border-radius: 2rem;
+}
+
+/* Flat colors */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.text-primary-color {
+  color: var(--color-primary);
+}
+
+.text-accent-color {
+  color: var(--color-accent);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.border-accent {
+  border-color: var(--color-accent);
+}
+
+.border-secondary {
+  border-color: var(--color-secondary);
 }
