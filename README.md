@@ -13,14 +13,20 @@
 
 ## 核心功能
 
+### 👤 单管理员系统
+- 从环境变量自动初始化单个管理员账户
+- 首次访问登录页面时自动创建管理员
+- 无需手动注册，简化部署流程
+
 ### 🔐 Token 生成与 HMAC 签名
 - 为每张 QSL 卡生成唯一的确认 Token（格式：`ABCD-EFGH-IJ`）
 - 使用 HMAC-SHA256 生成不可伪造的签名
 - 支持可选的 PIN 码保护
 - 二维码自动生成（包含 Token + Signature）
 
-### ✅ 确认流程
-- 收卡者扫描二维码或输入短码
+### ✅ 确认流程（无需登录）
+- **收卡者无需注册或登录**
+- 收卡者扫描二维码或输入短码即可访问确认页面
 - 实时验证签名有效性
 - 记录确认时间、IP、User Agent
 - 支持可选的留言功能
@@ -97,13 +103,23 @@ QSL_TOKEN_EXPIRY_DAYS=365
 
 # Application
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Single Admin Configuration
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-admin-password
 ```
 
-**重要**: `QSL_TOKEN_SECRET` 必须是至少 32 个字符的随机字符串，用于 HMAC 签名。可以使用以下命令生成：
+**重要配置说明**:
 
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
+- `QSL_TOKEN_SECRET`: 必须是至少 32 个字符的随机字符串，用于 HMAC 签名。生成方法：
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+
+- `ADMIN_EMAIL` 和 `ADMIN_PASSWORD`: 单管理员账户凭证
+  - 系统在首次访问登录页面时会自动使用这些凭证创建管理员账户
+  - 只会创建一个管理员用户
+  - 请使用强密码保护管理员账户
 
 ### 3. 设置数据库
 

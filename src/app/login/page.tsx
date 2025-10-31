@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
@@ -9,8 +9,35 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [initializing, setInitializing] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const checkAndInitAdmin = async () => {
+      try {
+        setInitializing(true);
+        const response = await fetch('/api/auth/init-admin');
+        const data = await response.json();
+        
+        if (data.needsInit) {
+          const initResponse = await fetch('/api/auth/init-admin', {
+            method: 'POST'
+          });
+          const initData = await initResponse.json();
+          
+          if (initData.success) {
+            console.log('Admin initialized successfully');
+          }
+        }
+      } catch (error) {
+        console.error('Error checking/initializing admin:', error);
+      } finally {
+        setInitializing(false);
+      }
+    };
+
+    checkAndInitAdmin();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,21 +51,12 @@ export default function LoginPage() {
     }
 
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        alert('Check your email for the confirmation link!');
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        router.push('/admin');
-      }
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      router.push('/admin');
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -50,6 +68,21 @@ export default function LoginPage() {
     }
   };
 
+  if (initializing) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+          <p className="text-center text-sm text-gray-500 mt-4">Initializing system...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -58,7 +91,7 @@ export default function LoginPage() {
             HamQSL Admin
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            {isSignUp ? 'Create your account' : 'Sign in to your account'}
+            Sign in to your account
           </p>
         </div>
         <form className="mt-8 space-y-6 bg-white rounded-lg shadow-xl p-8" onSubmit={handleSubmit}>
@@ -118,17 +151,7 @@ export default function LoginPage() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {loading ? 'Loading...' : isSignUp ? 'Sign up' : 'Sign in'}
-            </button>
-          </div>
-
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-blue-600 hover:text-blue-500"
-            >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
 

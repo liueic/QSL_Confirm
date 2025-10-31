@@ -63,6 +63,8 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
 QSL_TOKEN_SECRET=你生成的64位密钥
 QSL_TOKEN_EXPIRY_DAYS=365
 NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-admin-password
 ```
 
 ### ⚠️ 重要：Supabase 密钥配置说明
@@ -86,7 +88,9 @@ Supabase 官方明确要求区分两种密钥：
 - 容易误用导致安全风险
 - 不符合 Supabase 官方最佳实践
 
-**注意**：`NEXT_PUBLIC_APP_URL` 部署后会获得，可以先留空稍后更新。
+**注意**：
+- `NEXT_PUBLIC_APP_URL` 部署后会获得，可以先留空稍后更新
+- `ADMIN_EMAIL` 和 `ADMIN_PASSWORD` 用于自动初始化管理员账户（首次访问登录页面时自动创建）
 
 ## ✅ 部署后操作
 
@@ -105,12 +109,20 @@ Supabase 官方明确要求区分两种密钥：
 2. 设置 Site URL 为你的 Vercel URL
 3. 添加 Redirect URLs: `https://your-app.vercel.app/**`
 
-### 3. 测试部署
+### 3. 初始化管理员账户
+
+首次使用时：
+1. 访问 `https://your-app.vercel.app/login`
+2. 系统会自动使用环境变量中的 `ADMIN_EMAIL` 和 `ADMIN_PASSWORD` 创建管理员账户
+3. 使用这些凭证登录即可进入管理后台
+
+### 4. 测试部署
 
 访问你的应用 URL，测试：
 - ✅ 页面正常加载
+- ✅ 可以登录管理后台
 - ✅ 可以生成 Token
-- ✅ 可以扫描和确认
+- ✅ 可以扫描和确认（无需登录）
 
 ## 🎯 使用 Vercel CLI（可选）
 
