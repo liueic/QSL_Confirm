@@ -9,20 +9,18 @@ export default function NewQSOPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const myCallsign = process.env.NEXT_PUBLIC_MY_CALLSIGN || '';
+
   const [formData, setFormData] = useState({
     callsign_worked: '',
-    my_callsign: '',
-    datetime: new Date().toISOString().slice(0, 16),
-    band: '20m',
-    mode: 'SSB',
-    frequency: '',
-    rst_sent: '59',
-    rst_received: '59',
-    notes: '',
+    mailing_address: '',
+    postal_code: '',
+    mailed_at: new Date().toISOString().slice(0, 16),
+    mailing_location: '',
+    mailing_method: 'Direct',
   });
 
-  const bands = ['160m', '80m', '40m', '30m', '20m', '17m', '15m', '12m', '10m', '6m', '2m', '70cm'];
-  const modes = ['SSB', 'CW', 'FM', 'AM', 'RTTY', 'PSK31', 'FT8', 'FT4', 'DIGITAL'];
+  const mailingMethods = ['Direct', 'Bureau', 'Manager'];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -43,8 +41,16 @@ export default function NewQSOPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          frequency: formData.frequency ? parseFloat(formData.frequency) : null,
+          callsign_worked: formData.callsign_worked,
+          my_callsign: myCallsign,
+          mailing_address: formData.mailing_address,
+          postal_code: formData.postal_code,
+          mailed_at: formData.mailed_at,
+          mailing_location: formData.mailing_location,
+          mailing_method: formData.mailing_method,
+          datetime: formData.mailed_at,
+          band: '20m',
+          mode: 'SSB',
         }),
       });
 
@@ -68,20 +74,27 @@ export default function NewQSOPage() {
       <div className="mb-6">
         <Link
           href="/admin/qsos"
-          className="text-blue-600 hover:text-blue-900 flex items-center"
+          className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
         >
           <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to QSOs
+          返回 QSO 列表
         </Link>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New QSO</h2>
+      <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-8 shadow-xl">
+        <div className="flex items-center mb-6">
+          <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center mr-4">
+            <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white">添加实体 QSL 卡</h2>
+        </div>
 
         {error && (
-          <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+          <div className="mb-6 bg-red-500/10 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg">
             {error}
           </div>
         )}
@@ -89,8 +102,8 @@ export default function NewQSOPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="callsign_worked" className="block text-sm font-medium text-gray-700 mb-1">
-                Callsign Worked *
+              <label htmlFor="callsign_worked" className="block text-sm font-medium text-gray-300 mb-2">
+                对方呼号 *
               </label>
               <input
                 type="text"
@@ -98,154 +111,117 @@ export default function NewQSOPage() {
                 name="callsign_worked"
                 value={formData.callsign_worked}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
-                placeholder="e.g., N0CALL"
+                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent uppercase font-mono"
+                placeholder="例如: BG0AAA"
                 required
               />
+              <p className="mt-1 text-xs text-gray-500">收卡方的业余无线电呼号</p>
             </div>
 
             <div>
-              <label htmlFor="my_callsign" className="block text-sm font-medium text-gray-700 mb-1">
-                My Callsign
+              <label htmlFor="postal_code" className="block text-sm font-medium text-gray-300 mb-2">
+                邮政编码 *
               </label>
               <input
                 type="text"
-                id="my_callsign"
-                name="my_callsign"
-                value={formData.my_callsign}
+                id="postal_code"
+                name="postal_code"
+                value={formData.postal_code}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
-                placeholder="e.g., BG0AAA"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="datetime" className="block text-sm font-medium text-gray-700 mb-1">
-                Date & Time *
-              </label>
-              <input
-                type="datetime-local"
-                id="datetime"
-                name="datetime"
-                value={formData.datetime}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono"
+                placeholder="例如: 100000"
                 required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="band" className="block text-sm font-medium text-gray-700 mb-1">
-                Band *
-              </label>
-              <select
-                id="band"
-                name="band"
-                value={formData.band}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              >
-                {bands.map(band => (
-                  <option key={band} value={band}>{band}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="mode" className="block text-sm font-medium text-gray-700 mb-1">
-                Mode *
-              </label>
-              <select
-                id="mode"
-                name="mode"
-                value={formData.mode}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              >
-                {modes.map(mode => (
-                  <option key={mode} value={mode}>{mode}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="frequency" className="block text-sm font-medium text-gray-700 mb-1">
-                Frequency (MHz)
-              </label>
-              <input
-                type="number"
-                step="0.001"
-                id="frequency"
-                name="frequency"
-                value={formData.frequency}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., 14.250"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="rst_sent" className="block text-sm font-medium text-gray-700 mb-1">
-                RST Sent
-              </label>
-              <input
-                type="text"
-                id="rst_sent"
-                name="rst_sent"
-                value={formData.rst_sent}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., 59"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="rst_received" className="block text-sm font-medium text-gray-700 mb-1">
-                RST Received
-              </label>
-              <input
-                type="text"
-                id="rst_received"
-                name="rst_received"
-                value={formData.rst_received}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., 59"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
-              Notes
+            <label htmlFor="mailing_address" className="block text-sm font-medium text-gray-300 mb-2">
+              邮寄地址 *
             </label>
             <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
+              id="mailing_address"
+              name="mailing_address"
+              value={formData.mailing_address}
               onChange={handleChange}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              placeholder="Additional notes about this QSO..."
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              placeholder="例如: 北京市朝阳区xxx路xxx号"
+              required
             />
+            <p className="mt-1 text-xs text-gray-500">QSL卡片的邮寄目的地址</p>
           </div>
 
-          <div className="flex items-center justify-end space-x-4">
-            <Link
-              href="/admin/qsos"
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </Link>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Creating...' : 'Create QSO'}
-            </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="mailed_at" className="block text-sm font-medium text-gray-300 mb-2">
+                邮寄时间 *
+              </label>
+              <input
+                type="datetime-local"
+                id="mailed_at"
+                name="mailed_at"
+                value={formData.mailed_at}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="mailing_method" className="block text-sm font-medium text-gray-300 mb-2">
+                邮寄方式 *
+              </label>
+              <select
+                id="mailing_method"
+                name="mailing_method"
+                value={formData.mailing_method}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                required
+              >
+                {mailingMethods.map(method => (
+                  <option key={method} value={method}>{method}</option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Direct: 直邮 | Bureau: 卡片局 | Manager: 通过Manager
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="mailing_location" className="block text-sm font-medium text-gray-300 mb-2">
+              邮寄地点
+            </label>
+            <input
+              type="text"
+              id="mailing_location"
+              name="mailing_location"
+              value={formData.mailing_location}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="例如: 北京邮局"
+            />
+            <p className="mt-1 text-xs text-gray-500">从哪里寄出的QSL卡片</p>
+          </div>
+
+          <div className="pt-6 border-t border-slate-700">
+            <div className="flex items-center justify-end space-x-4">
+              <Link
+                href="/admin/qsos"
+                className="px-6 py-3 border border-slate-600 rounded-lg text-gray-300 hover:bg-slate-700/50 transition-colors"
+              >
+                取消
+              </Link>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                {loading ? '创建中...' : '创建 QSO'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
