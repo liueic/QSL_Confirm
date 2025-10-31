@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { Lock, Mail, ArrowLeft, AlertCircle, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface InitStatus {
   needsInit: boolean;
@@ -82,7 +83,6 @@ export default function LoginPage() {
             setInitError(errorMsg);
             console.error('Admin initialization failed:', initData);
             
-            // 即使初始化失败，也保留状态信息（包括邮箱）
             setInitStatus(prev => prev ? { ...prev } : null);
           }
         }
@@ -115,7 +115,6 @@ export default function LoginPage() {
       });
       
       if (error) {
-        // 转换常见的错误消息为友好的中文提示
         let friendlyError = error.message;
         
         if (error.message.includes('Invalid login credentials') || 
@@ -141,24 +140,18 @@ export default function LoginPage() {
         throw new Error(friendlyError);
       }
       
-      // 登录成功，确保session已保存
       if (data?.session) {
-        // 等待session完全保存到localStorage
         await new Promise(resolve => setTimeout(resolve, 200));
         
-        // 验证session是否已保存
         const { data: { session: verifySession } } = await supabase.auth.getSession();
         
         if (verifySession) {
-          // 使用window.location.href进行硬跳转，触发完整的页面刷新
-          // 这将确保服务端可以正确读取认证状态
           window.location.href = '/admin';
         } else {
           setError('登录成功，但会话保存失败。请刷新页面后重试。');
           setLoading(false);
         }
       } else {
-        // 如果没有session，可能登录失败
         setError('登录成功，但未获取到会话信息。请重试。');
         setLoading(false);
       }
@@ -195,7 +188,6 @@ export default function LoginPage() {
       setError(null);
       alert(`管理员账户已成功重置！\n\n请使用环境变量中配置的 ADMIN_EMAIL 和 ADMIN_PASSWORD 登录。`);
       
-      // 重新检查初始化状态
       const checkResponse = await fetch('/api/auth/init-admin');
       const checkData = await checkResponse.json();
       if (checkResponse.ok) {
@@ -265,14 +257,13 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 relative overflow-hidden">
         <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
-        <div className="fixed inset-0 stars pointer-events-none"></div>
         <div className="card-candy border-candy-purple p-8 max-w-md w-full bg-white/90 relative z-10">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-gradient-to-r from-candy-pink to-candy-purple rounded-2xl w-3/4 mx-auto"></div>
             <div className="h-4 bg-candy-blue rounded-xl"></div>
             <div className="h-4 bg-candy-purple rounded-xl w-5/6"></div>
           </div>
-          <p className="text-center text-base font-bold mt-4" style={{color: 'var(--text-secondary)'}}>✨ Initializing system... ✨</p>
+          <p className="text-center font-medium mt-4" style={{color: 'var(--text-secondary)'}}>Initializing system...</p>
         </div>
       </div>
     );
@@ -281,32 +272,28 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
-      <div className="fixed inset-0 stars pointer-events-none"></div>
       
       <div className="max-w-md w-full space-y-8 relative z-10">
         <div className="text-center">
-          <div className="inline-block mb-6 px-6 py-3 bg-white/80 border-4 border-candy-purple rounded-2xl shadow-lg animate-wiggle">
-            <span className="text-candy-purple font-[family-name:var(--font-pixel-mono)] text-xs tracking-wider">✨ ADMIN LOGIN ✨</span>
+          <div className="inline-block mb-6 px-6 py-3 bg-white/80 border-4 border-candy-purple rounded-2xl shadow-lg">
+            <span className="text-candy-purple font-heading text-sm tracking-wider font-semibold">ADMIN LOGIN</span>
           </div>
-          <h2 className="text-4xl font-black mb-2" style={{color: 'var(--text-primary)'}}>
-            🎮 HamQSL Admin 🎮
+          <h2 className="font-heading text-4xl font-semibold mb-2" style={{color: 'var(--text-primary)'}}>
+            HamQSL Admin
           </h2>
-          <p className="text-lg font-bold" style={{color: 'var(--text-secondary)'}}>
+          <p className="text-lg font-medium" style={{color: 'var(--text-secondary)'}}>
             Sign in to your account
           </p>
         </div>
 
-        {/* 初始化错误提示 */}
         {initError && (
           <div className="rounded-md bg-yellow-50 border border-yellow-200 p-4">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
+                <AlertTriangle className="h-5 w-5 text-yellow-400" />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-yellow-800">初始化警告</h3>
+                <h3 className="text-sm font-semibold text-yellow-800">初始化警告</h3>
                 <p className="mt-1 text-sm text-yellow-700 whitespace-pre-line">{initError}</p>
                 {isDevelopment && (
                   <p className="mt-2 text-xs text-yellow-600">
@@ -318,7 +305,6 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* 诊断信息和登录提示 */}
         {initStatus && (
           <div className="rounded-md bg-blue-50 border border-blue-200 p-4">
             <div className="font-semibold text-blue-800 mb-2 text-sm">登录信息</div>
@@ -331,23 +317,23 @@ export default function LoginPage() {
                   </div>
                   {!initStatus.adminExists && initStatus.hasUsers && (
                     <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-xs">
-                      ⚠️ 注意：配置的邮箱与数据库中的用户不匹配。现有用户：{initStatus.existingUserEmails?.join(', ') || '无'}
+                      注意：配置的邮箱与数据库中的用户不匹配。现有用户：{initStatus.existingUserEmails?.join(', ') || '无'}
                     </div>
                   )}
                 </div>
               ) : (
                 <div className="text-red-700">
-                  ⚠️ 管理员邮箱未配置。请设置环境变量 ADMIN_EMAIL。
+                  管理员邮箱未配置。请设置环境变量 ADMIN_EMAIL。
                 </div>
               )}
               
               {isDevelopment && (
                 <div className="mt-3 pt-3 border-t border-blue-200 text-xs space-y-1 text-blue-600">
                   <div>初始化状态: {initStatus.needsInit ? '需要初始化' : '已完成'}</div>
-                  <div>管理员配置: {initStatus.adminConfigured ? '✓ 已配置' : '✗ 未配置'}</div>
-                  <div>已有用户: {initStatus.hasUsers ? `✓ 是 (${initStatus.userCount || 0}个)` : '✗ 否'}</div>
+                  <div>管理员配置: {initStatus.adminConfigured ? '已配置' : '未配置'}</div>
+                  <div>已有用户: {initStatus.hasUsers ? `是 (${initStatus.userCount || 0}个)` : '否'}</div>
                   {initStatus.adminExists !== undefined && (
-                    <div>邮箱匹配: {initStatus.adminExists ? '✓ 是' : '✗ 否'}</div>
+                    <div>邮箱匹配: {initStatus.adminExists ? '是' : '否'}</div>
                   )}
                 </div>
               )}
@@ -364,8 +350,9 @@ export default function LoginPage() {
         <form className="mt-8 space-y-6 card-candy border-candy-pink p-8 bg-white/90" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
-                📧 Email address
+              <label htmlFor="email-address" className="block text-sm font-semibold mb-2 flex items-center gap-2" style={{color: 'var(--text-primary)'}}>
+                <Mail className="w-4 h-4" />
+                Email address
               </label>
               <input
                 id="email-address"
@@ -375,14 +362,15 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-300"
                 style={{color: 'var(--text-primary)'}}
                 placeholder="admin@example.com"
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
-                🔑 Password
+              <label htmlFor="password" className="block text-sm font-semibold mb-2 flex items-center gap-2" style={{color: 'var(--text-primary)'}}>
+                <Lock className="w-4 h-4" />
+                Password
               </label>
               <input
                 id="password"
@@ -392,7 +380,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-300"
                 style={{color: 'var(--text-primary)'}}
                 placeholder="••••••••"
               />
@@ -403,12 +391,10 @@ export default function LoginPage() {
             <div className="rounded-md bg-red-50 border border-red-200 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
+                  <AlertCircle className="h-5 w-5 text-red-400" />
                 </div>
                 <div className="ml-3 flex-1">
-                  <h3 className="text-sm font-medium text-red-800">登录失败</h3>
+                  <h3 className="text-sm font-semibold text-red-800">登录失败</h3>
                   <p className="mt-1 text-sm text-red-700 whitespace-pre-line">{error}</p>
                 </div>
               </div>
@@ -419,9 +405,9 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-candy w-full py-4 bg-gradient-to-r from-candy-pink to-candy-purple border-candy-pink text-white font-black text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-candy w-full py-4 bg-gradient-to-r from-candy-pink to-candy-purple border-candy-pink text-white font-bold text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? '🔄 Signing in...' : '🚀 Sign in'}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
 
@@ -429,7 +415,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setShowResetForm(!showResetForm)}
-              className="text-sm text-blue-600 hover:text-blue-500"
+              className="text-sm text-blue-600 hover:text-blue-500 font-medium"
             >
               忘记密码？
             </button>
@@ -467,9 +453,7 @@ export default function LoginPage() {
                   <div className="rounded-md bg-green-50 p-4">
                     <div className="flex">
                       <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
+                        <CheckCircle2 className="h-5 w-5 text-green-400" />
                       </div>
                       <div className="ml-3">
                         <p className="text-sm text-green-700">
@@ -507,9 +491,10 @@ export default function LoginPage() {
           <div className="text-center pt-4 border-t border-gray-200">
             <a
               href="/"
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className="text-sm text-gray-600 hover:text-gray-900 inline-flex items-center gap-2 font-medium"
             >
-              ← Back to home
+              <ArrowLeft className="w-4 h-4" />
+              Back to home
             </a>
           </div>
         </form>
