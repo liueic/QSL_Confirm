@@ -263,27 +263,35 @@ export default function LoginPage() {
 
   if (initializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 relative overflow-hidden">
+        <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
+        <div className="fixed inset-0 stars pointer-events-none"></div>
+        <div className="card-candy border-candy-purple p-8 max-w-md w-full bg-white/90 relative z-10">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-8 bg-gradient-to-r from-candy-pink to-candy-purple rounded-2xl w-3/4 mx-auto"></div>
+            <div className="h-4 bg-candy-blue rounded-xl"></div>
+            <div className="h-4 bg-candy-purple rounded-xl w-5/6"></div>
           </div>
-          <p className="text-center text-sm text-gray-500 mt-4">Initializing system...</p>
+          <p className="text-center text-base font-bold mt-4" style={{color: 'var(--text-secondary)'}}>✨ Initializing system... ✨</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            HamQSL Admin
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
+      <div className="fixed inset-0 stars pointer-events-none"></div>
+      
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center">
+          <div className="inline-block mb-6 px-6 py-3 bg-white/80 border-4 border-candy-purple rounded-2xl shadow-lg animate-wiggle">
+            <span className="text-candy-purple font-[family-name:var(--font-pixel-mono)] text-xs tracking-wider">✨ ADMIN LOGIN ✨</span>
+          </div>
+          <h2 className="text-4xl font-black mb-2" style={{color: 'var(--text-primary)'}}>
+            🎮 HamQSL Admin 🎮
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="text-lg font-bold" style={{color: 'var(--text-secondary)'}}>
             Sign in to your account
           </p>
         </div>
@@ -353,11 +361,11 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form className="mt-8 space-y-6 bg-white rounded-lg shadow-xl p-8" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+        <form className="mt-8 space-y-6 card-candy border-candy-pink p-8 bg-white/90" onSubmit={handleSubmit}>
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
+              <label htmlFor="email-address" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+                📧 Email address
               </label>
               <input
                 id="email-address"
@@ -367,13 +375,14 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                style={{color: 'var(--text-primary)'}}
+                placeholder="admin@example.com"
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
+              <label htmlFor="password" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+                🔑 Password
               </label>
               <input
                 id="password"
@@ -383,8 +392,9 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                style={{color: 'var(--text-primary)'}}
+                placeholder="••••••••"
               />
             </div>
           </div>
@@ -409,9 +419,9 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="btn-candy w-full py-4 bg-gradient-to-r from-candy-pink to-candy-purple border-candy-pink text-white font-black text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? '🔄 Signing in...' : '🚀 Sign in'}
             </button>
           </div>
 
