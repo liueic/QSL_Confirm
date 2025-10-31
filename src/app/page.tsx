@@ -68,7 +68,7 @@ export default function Home() {
             style={{ background: 'var(--color-surface)' }}
           >
             <div
-              className="mb-10 flex w-full max-w-md rounded-full border p-1.5"
+              className="mx-auto mb-10 flex w-full max-w-md rounded-full border p-1.5"
               style={{ background: 'var(--color-bg)', borderColor: 'var(--color-border)' }}
               role="tablist"
               aria-label="选择确认方式"
@@ -108,7 +108,7 @@ export default function Home() {
             {activeTab === 'input' && (
               <form
                 onSubmit={handleSubmit}
-                className="space-y-8"
+                className="mx-auto space-y-8"
                 role="tabpanel"
                 aria-labelledby="tab-input"
               >
@@ -119,21 +119,23 @@ export default function Home() {
                   >
                     输入确认码 / 粘贴确认链接
                   </label>
-                  <input
-                    type="text"
-                    id="token"
-                    value={token}
-                    onChange={(event) => {
-                      setToken(event.target.value);
-                      if (error) {
-                        setError('');
-                      }
-                    }}
-                    className="w-full rounded-full border-4 border-candy-purple bg-white px-6 py-5 text-center text-xl font-semibold tracking-widest text-primary transition-colors placeholder:text-secondary focus:border-candy-yellow focus:outline-none"
-                    placeholder="XXXX-XXXX-XX"
-                    autoComplete="off"
-                    autoFocus
-                  />
+                  <div className="flex justify-center">
+                    <input
+                      type="text"
+                      id="token"
+                      value={token}
+                      onChange={(event) => {
+                        setToken(event.target.value);
+                        if (error) {
+                          setError('');
+                        }
+                      }}
+                      className="w-full max-w-md rounded-full border-4 border-candy-purple bg-white px-6 py-5 text-center text-xl font-semibold tracking-widest text-primary transition-colors placeholder:text-secondary focus:border-candy-yellow focus:outline-none"
+                      placeholder="XXXX-XXXX-XX"
+                      autoComplete="off"
+                      autoFocus
+                    />
+                  </div>
                   {error && (
                     <p className="text-center text-sm font-medium text-red-500">
                       {error}
@@ -141,19 +143,21 @@ export default function Home() {
                   )}
                 </div>
 
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center gap-3 rounded-full bg-candy-yellow px-6 py-5 text-xl font-bold text-gray-900 transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent active:translate-y-0"
-                >
-                  <CheckCircle2 className="h-6 w-6 text-gray-900" />
-                  <span>确认 QSL</span>
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="flex w-full max-w-md items-center justify-center gap-3 rounded-full bg-candy-yellow px-6 py-5 text-xl font-bold text-gray-900 transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent active:translate-y-0"
+                  >
+                    <CheckCircle2 className="h-6 w-6 text-gray-900" />
+                    <span>确认 QSL</span>
+                  </button>
+                </div>
               </form>
             )}
 
             {activeTab === 'scan' && (
               <div
-                className="space-y-8"
+                className="mx-auto space-y-8"
                 role="tabpanel"
                 aria-labelledby="tab-scan"
               >
@@ -167,24 +171,26 @@ export default function Home() {
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleScanQR}
-                  disabled={isScanning}
-                  className="flex w-full items-center justify-center gap-3 rounded-full bg-candy-blue px-6 py-5 text-xl font-bold text-gray-900 transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0"
-                >
-                  <QrCode className="h-6 w-6 text-gray-900" />
-                  <span>{isScanning ? '正在打开相机…' : '开始扫描二维码'}</span>
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    onClick={handleScanQR}
+                    disabled={isScanning}
+                    className="flex w-full max-w-md items-center justify-center gap-3 rounded-full bg-candy-blue px-6 py-5 text-xl font-bold text-gray-900 transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-60 active:translate-y-0"
+                  >
+                    <QrCode className="h-6 w-6 text-gray-900" />
+                    <span>{isScanning ? '正在打开相机…' : '开始扫描二维码'}</span>
+                  </button>
+                </div>
 
                 <p className="text-center text-sm font-medium text-secondary">
-                  无法使用摄像头？切换回上方“输入确认码”选项完成操作。
+                  无法使用摄像头？切换回上方"输入确认码"选项完成操作。
                 </p>
               </div>
             )}
 
             <div className="mt-12 flex justify-center">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center justify-center space-x-3">
                 <span className="h-2 w-2 rounded-full bg-[var(--color-border)]" />
                 <span className="h-2 w-2 rounded-full bg-[var(--color-border)]" />
                 <span className="h-2 w-2 rounded-full bg-[var(--color-border)]" />
