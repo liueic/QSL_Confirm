@@ -179,24 +179,36 @@ export async function GET() {
     if (listError) {
       console.error('Error checking users:', listError);
       return NextResponse.json(
-        { error: 'Failed to check users' },
+        { error: 'Failed to check users', details: listError.message },
         { status: 500 }
       );
     }
 
-    const adminConfigured = !!(process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD);
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminConfigured = !!(adminEmail && adminPassword);
     const hasUsers = users && users.length > 0;
+    
+    // 检查配置的邮箱是否在现有用户中
+    const adminExists = adminEmail && users?.some(user => user.email?.toLowerCase() === adminEmail.toLowerCase());
+    
+    // 获取所有现有用户的邮箱（用于诊断）
+    const existingUserEmails = users?.map(user => user.email).filter(Boolean) || [];
 
     return NextResponse.json({
       success: true,
       needsInit: adminConfigured && !hasUsers,
       adminConfigured,
-      hasUsers
+      hasUsers,
+      adminEmail: adminEmail || null, // 返回配置的邮箱（不包含密码）
+      adminExists,
+      existingUserEmails, // 返回现有用户的邮箱列表
+      userCount: users?.length || 0,
     });
   } catch (error) {
     console.error('Error checking init status:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
