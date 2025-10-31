@@ -2,6 +2,9 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
+// 强制动态渲染，因为需要用户认证
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: {

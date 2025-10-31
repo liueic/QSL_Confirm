@@ -22,9 +22,6 @@ import { createClient } from '@supabase/supabase-js';
  * - 不符合 Supabase 官方最佳实践
  */
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
 /**
  * 客户端 Supabase 实例
  * 使用 anon key，受 RLS 保护，可在客户端安全使用
@@ -32,9 +29,30 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
  * ⚠️ 注意：如果环境变量未设置，此实例将为 null
  * 使用前请检查：if (!supabase) { ... }
  */
-export const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+let _supabaseInstance: ReturnType<typeof createClient> | null = null;
+
+export const supabase = (() => {
+  if (typeof window === 'undefined') {
+    // 在服务器端渲染时，如果环境变量不存在，返回null而不是抛出错误
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return null;
+    }
+  }
+  
+  if (!_supabaseInstance) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    
+    if (supabaseUrl && supabaseAnonKey) {
+      _supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+    }
+  }
+  
+  return _supabaseInstance;
+})();
 
 /**
  * 服务端 Supabase 实例（仅用于管理员操作）
@@ -52,6 +70,7 @@ export const supabase = supabaseUrl && supabaseAnonKey
  * ```
  */
 export function getServiceSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
   if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error('Supabase configuration missing');

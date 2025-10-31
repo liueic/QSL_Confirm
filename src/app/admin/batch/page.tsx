@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
+// 强制动态渲染，禁用预渲染
+export const dynamic = 'force-dynamic';
+
 interface QSO {
   id: string;
   callsign_worked: string;
