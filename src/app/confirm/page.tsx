@@ -233,61 +233,71 @@ function ConfirmContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-lg w-full">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
+      {/* Grid background */}
+      <div className="fixed inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)',
+          backgroundSize: '50px 50px'
+        }} />
+      </div>
+      <div className="relative z-10 bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl shadow-2xl p-8 max-w-lg w-full">
         <div className="flex justify-end mb-4">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => changeLanguage('zh')}
               disabled={isPending}
-              className="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+              className="px-3 py-1 text-sm rounded-md transition-colors bg-slate-700 text-gray-300 hover:bg-slate-600 disabled:opacity-50"
             >
               中文
             </button>
             <button
               onClick={() => changeLanguage('en')}
               disabled={isPending}
-              className="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+              className="px-3 py-1 text-sm rounded-md transition-colors bg-slate-700 text-gray-300 hover:bg-slate-600 disabled:opacity-50"
             >
               English
             </button>
           </div>
         </div>
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="inline-block mb-4 px-4 py-2 bg-purple-500/20 border border-purple-500/50 rounded-lg backdrop-blur-sm">
+            <span className="text-purple-300 text-sm font-mono tracking-wider">QSL CONFIRMATION</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">
             {t('title')}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-400">
             {t('subtitle')}
           </p>
         </div>
 
         {tokenInfo && (
-          <div className="bg-blue-50 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">{t('qsoDetails')}</h3>
+          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6 mb-6">
+            <h3 className="font-semibold text-white mb-4">{t('qsoDetails')}</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">{t('callsign')}:</span>
-                <span className="font-semibold text-gray-900">{tokenInfo.qso.callsign_worked}</span>
+                <span className="text-gray-400">{t('callsign')}:</span>
+                <span className="font-semibold text-purple-300 font-mono">{tokenInfo.qso.callsign_worked}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">{t('dateTime')}:</span>
-                <span className="font-semibold text-gray-900">
+                <span className="text-gray-400">{t('dateTime')}:</span>
+                <span className="font-semibold text-white">
                   {new Date(tokenInfo.qso.datetime).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">{t('band')}:</span>
-                <span className="font-semibold text-gray-900">{tokenInfo.qso.band}</span>
+                <span className="text-gray-400">{t('band')}:</span>
+                <span className="font-semibold text-white">{tokenInfo.qso.band}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">{t('mode')}:</span>
-                <span className="font-semibold text-gray-900">{tokenInfo.qso.mode}</span>
+                <span className="text-gray-400">{t('mode')}:</span>
+                <span className="font-semibold text-white">{tokenInfo.qso.mode}</span>
               </div>
               {tokenInfo.qso.frequency && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{t('frequency')}:</span>
-                  <span className="font-semibold text-gray-900">{tokenInfo.qso.frequency} MHz</span>
+                  <span className="text-gray-400">{t('frequency')}:</span>
+                  <span className="font-semibold text-white">{tokenInfo.qso.frequency} MHz</span>
                 </div>
               )}
             </div>
@@ -297,7 +307,7 @@ function ConfirmContent() {
         <form onSubmit={handleConfirm} className="space-y-4">
           {tokenInfo?.requires_pin && (
             <div>
-              <label htmlFor="pin" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="pin" className="block text-sm font-medium text-gray-300 mb-1">
                 {t('pinRequired')} *
               </label>
               <input
@@ -305,7 +315,7 @@ function ConfirmContent() {
                 id="pin"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder={t('pinPlaceholder')}
                 maxLength={6}
                 required
@@ -317,7 +327,7 @@ function ConfirmContent() {
           )}
 
           <div>
-            <label htmlFor="callsign" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="callsign" className="block text-sm font-medium text-gray-300 mb-1">
               {t('yourCallsign')}
             </label>
             <input
@@ -325,13 +335,13 @@ function ConfirmContent() {
               id="callsign"
               value={callsign}
               onChange={(e) => setCallsign(e.target.value.toUpperCase())}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono uppercase"
               placeholder={t('callsignPlaceholder')}
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
               {t('yourEmail')}
             </label>
             <input
@@ -339,13 +349,13 @@ function ConfirmContent() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder={t('emailPlaceholder')}
             />
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
               {t('message')}
             </label>
             <textarea
@@ -353,13 +363,13 @@ function ConfirmContent() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
               placeholder={t('messagePlaceholder')}
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-500/10 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -367,13 +377,13 @@ function ConfirmContent() {
           <button
             type="submit"
             disabled={confirming}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
             {confirming ? t('confirming') : t('confirmReceipt')}
           </button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="mt-6 pt-6 border-t border-slate-700">
           <p className="text-xs text-gray-500 text-center">
             {t('privacyNotice')}
           </p>

@@ -25,6 +25,11 @@ export async function POST(request: NextRequest) {
       rst_sent,
       rst_received,
       notes,
+      mailing_address,
+      postal_code,
+      mailed_at,
+      mailing_location,
+      mailing_method,
     } = body;
 
     if (!callsign_worked || !datetime || !band || !mode) {
@@ -47,7 +52,12 @@ export async function POST(request: NextRequest) {
         rst_sent: rst_sent || null,
         rst_received: rst_received || null,
         notes: notes || null,
-        mailed: false,
+        mailing_address: mailing_address || null,
+        postal_code: postal_code || null,
+        mailed_at: mailed_at ? new Date(mailed_at).toISOString() : null,
+        mailing_location: mailing_location || null,
+        mailing_method: mailing_method || null,
+        mailed: mailed_at ? true : false,
         confirmed: false,
       })
       .select()
