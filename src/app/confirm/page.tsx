@@ -316,7 +316,7 @@ function ConfirmContent() {
                 id="pin"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-600 focus:border-candy-pink transition-all"
                 style={{color: 'var(--text-primary)'}}
                 placeholder={t('pinPlaceholder')}
                 maxLength={6}
@@ -337,7 +337,7 @@ function ConfirmContent() {
               id="callsign"
               value={callsign}
               onChange={(e) => setCallsign(e.target.value.toUpperCase())}
-              className="w-full px-4 py-3 bg-white border-4 border-candy-blue rounded-2xl font-bold placeholder-blue-300 focus:border-candy-cyan transition-all font-[family-name:var(--font-pixel-mono)] text-sm uppercase"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-blue rounded-2xl font-bold placeholder-blue-600 focus:border-candy-cyan transition-all font-[family-name:var(--font-pixel-mono)] text-sm uppercase"
               style={{color: 'var(--text-primary)'}}
               placeholder={t('callsignPlaceholder')}
             />
@@ -352,7 +352,7 @@ function ConfirmContent() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-white border-4 border-candy-mint rounded-2xl font-bold placeholder-green-300 focus:border-candy-cyan transition-all"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-mint rounded-2xl font-bold placeholder-green-600 focus:border-candy-cyan transition-all"
               style={{color: 'var(--text-primary)'}}
               placeholder={t('emailPlaceholder')}
             />
@@ -367,7 +367,7 @@ function ConfirmContent() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
-              className="w-full px-4 py-3 bg-white border-4 border-candy-yellow rounded-2xl font-bold placeholder-yellow-300 focus:border-candy-orange transition-all resize-none"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-yellow rounded-2xl font-bold placeholder-orange-600 focus:border-candy-orange transition-all resize-none"
               style={{color: 'var(--text-primary)'}}
               placeholder={t('messagePlaceholder')}
             />

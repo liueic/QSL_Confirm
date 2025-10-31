@@ -362,7 +362,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-300"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-600"
                 style={{color: 'var(--text-primary)'}}
                 placeholder="admin@example.com"
               />
@@ -380,7 +380,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-300"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-semibold placeholder-purple-600"
                 style={{color: 'var(--text-primary)'}}
                 placeholder="••••••••"
               />
@@ -445,7 +445,7 @@ export default function LoginPage() {
                     required
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
-                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     placeholder="请输入您的邮箱地址"
                   />
                 </div>

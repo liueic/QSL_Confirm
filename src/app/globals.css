@@ -312,3 +312,36 @@ select:focus {
 .border-secondary {
   border-color: var(--color-secondary);
 }
+
+/* 🎨 Placeholder Colors - 占位符颜色（确保足够的对比度） */
+/* 为白色背景的输入框提供深色占位符，确保可见性 */
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-secondary) !important;
+  opacity: 0.8;
+}
+
+/* 覆盖Tailwind的浅色占位符类，使用更深的颜色 */
+input.placeholder-purple-300::placeholder,
+textarea.placeholder-purple-300::placeholder {
+  color: #9333ea !important; /* purple-600 */
+  opacity: 0.7;
+}
+
+input.placeholder-blue-300::placeholder,
+textarea.placeholder-blue-300::placeholder {
+  color: #2563eb !important; /* blue-600 */
+  opacity: 0.7;
+}
+
+input.placeholder-green-300::placeholder,
+textarea.placeholder-green-300::placeholder {
+  color: #16a34a !important; /* green-600 */
+  opacity: 0.7;
+}
+
+input.placeholder-yellow-300::placeholder,
+textarea.placeholder-yellow-300::placeholder {
+  color: #ca8a04 !important; /* yellow-600 */
+  opacity: 0.7;
+}
