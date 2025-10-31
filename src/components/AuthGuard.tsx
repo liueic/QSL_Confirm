@@ -39,6 +39,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
     checkAuth();
 
+    if (!supabase) {
+      return;
+    }
+
     // 监听auth状态变化
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {

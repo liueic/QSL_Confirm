@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useTransition } from 'react';
 
 interface QSOInfo {
   callsign_worked: string;
@@ -20,6 +22,7 @@ interface TokenInfo {
 }
 
 function ConfirmContent() {
+  const t = useTranslations('confirm');
   const searchParams = useSearchParams();
   const [tokenInfo, setTokenInfo] = useState<TokenInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -142,23 +145,16 @@ function ConfirmContent() {
               )}
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {isMissingParams ? 'Confirmation Link Required' : 'Error'}
+              {isMissingParams ? t('linkRequired') : t('error')}
             </h2>
             <p className="text-gray-600 mb-4">
-              {isMissingParams ? (
-                <>
-                  This page requires a valid confirmation link to access.<br />
-                  Please use the link provided on your QSL card or in the email you received.
-                </>
-              ) : (
-                error
-              )}
+              {isMissingParams ? t('linkRequiredDesc') : error}
             </p>
             {isMissingParams && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left">
-                <p className="text-sm text-blue-800 font-medium mb-1">What you need:</p>
+                <p className="text-sm text-blue-800 font-medium mb-1">{t('whatYouNeed')}</p>
                 <p className="text-xs text-blue-700">
-                  A confirmation link in the format:<br />
+                  {t('linkFormat')}<br />
                   <code className="bg-blue-100 px-2 py-1 rounded text-xs">/confirm?token=...&sig=...</code>
                 </p>
               </div>
@@ -167,7 +163,7 @@ function ConfirmContent() {
               href="/"
               className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Go to Home
+              {t('goHome')}
             </a>
           </div>
         </div>
@@ -185,16 +181,16 @@ function ConfirmContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">QSL Card Confirmed!</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('confirmed')}</h2>
             <p className="text-gray-600 mb-6">
-              Your confirmation has been recorded. The sender has been notified.
+              {t('confirmedDesc')}
             </p>
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <p className="text-sm text-gray-500 mb-1">Token</p>
+              <p className="text-sm text-gray-500 mb-1">{t('token')}</p>
               <p className="font-mono text-lg font-semibold text-gray-900">{token}</p>
             </div>
             <p className="text-sm text-gray-500">
-              Thank you for confirming your QSL card receipt!
+              {t('thankYou')}
             </p>
           </div>
         </div>
@@ -212,13 +208,13 @@ function ConfirmContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Already Confirmed</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('alreadyConfirmed')}</h2>
             <p className="text-gray-600 mb-4">
-              This QSL card has already been confirmed.
+              {t('alreadyConfirmedDesc')}
             </p>
             {tokenInfo.used_at && (
               <p className="text-sm text-gray-500 mb-6">
-                Confirmed on: {new Date(tokenInfo.used_at).toLocaleString()}
+                {t('confirmedOn', { date: new Date(tokenInfo.used_at).toLocaleString() })}
               </p>
             )}
           </div>
@@ -227,43 +223,70 @@ function ConfirmContent() {
     );
   }
 
+  const [isPending, startTransition] = useTransition();
+
+  const changeLanguage = (locale: string) => {
+    startTransition(() => {
+      document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
+      window.location.reload();
+    });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
       <div className="bg-white rounded-lg shadow-xl p-8 max-w-lg w-full">
+        <div className="flex justify-end mb-4">
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => changeLanguage('zh')}
+              disabled={isPending}
+              className="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+            >
+              中文
+            </button>
+            <button
+              onClick={() => changeLanguage('en')}
+              disabled={isPending}
+              className="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300 disabled:opacity-50"
+            >
+              English
+            </button>
+          </div>
+        </div>
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            QSL Card Confirmation
+            {t('title')}
           </h1>
           <p className="text-gray-600">
-            Confirm receipt of your QSL card
+            {t('subtitle')}
           </p>
         </div>
 
         {tokenInfo && (
           <div className="bg-blue-50 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">QSO Details</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">{t('qsoDetails')}</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">Callsign:</span>
+                <span className="text-gray-600">{t('callsign')}:</span>
                 <span className="font-semibold text-gray-900">{tokenInfo.qso.callsign_worked}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Date/Time:</span>
+                <span className="text-gray-600">{t('dateTime')}:</span>
                 <span className="font-semibold text-gray-900">
                   {new Date(tokenInfo.qso.datetime).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Band:</span>
+                <span className="text-gray-600">{t('band')}:</span>
                 <span className="font-semibold text-gray-900">{tokenInfo.qso.band}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Mode:</span>
+                <span className="text-gray-600">{t('mode')}:</span>
                 <span className="font-semibold text-gray-900">{tokenInfo.qso.mode}</span>
               </div>
               {tokenInfo.qso.frequency && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Frequency:</span>
+                  <span className="text-gray-600">{t('frequency')}:</span>
                   <span className="font-semibold text-gray-900">{tokenInfo.qso.frequency} MHz</span>
                 </div>
               )}
@@ -275,7 +298,7 @@ function ConfirmContent() {
           {tokenInfo?.requires_pin && (
             <div>
               <label htmlFor="pin" className="block text-sm font-medium text-gray-700 mb-1">
-                PIN (Required) *
+                {t('pinRequired')} *
               </label>
               <input
                 type="text"
@@ -283,19 +306,19 @@ function ConfirmContent() {
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter 6-digit PIN"
+                placeholder={t('pinPlaceholder')}
                 maxLength={6}
                 required
               />
               <p className="mt-1 text-xs text-gray-500">
-                The PIN can be found on your QSL card
+                {t('pinHelp')}
               </p>
             </div>
           )}
 
           <div>
             <label htmlFor="callsign" className="block text-sm font-medium text-gray-700 mb-1">
-              Your Callsign (Optional)
+              {t('yourCallsign')}
             </label>
             <input
               type="text"
@@ -303,13 +326,13 @@ function ConfirmContent() {
               value={callsign}
               onChange={(e) => setCallsign(e.target.value.toUpperCase())}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., N0CALL"
+              placeholder={t('callsignPlaceholder')}
             />
           </div>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Your Email (Optional)
+              {t('yourEmail')}
             </label>
             <input
               type="email"
@@ -317,13 +340,13 @@ function ConfirmContent() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="your@email.com"
+              placeholder={t('emailPlaceholder')}
             />
           </div>
 
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-              Message (Optional)
+              {t('message')}
             </label>
             <textarea
               id="message"
@@ -331,7 +354,7 @@ function ConfirmContent() {
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              placeholder="Leave a message for the sender..."
+              placeholder={t('messagePlaceholder')}
             />
           </div>
 
@@ -346,13 +369,13 @@ function ConfirmContent() {
             disabled={confirming}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {confirming ? 'Confirming...' : 'Confirm Receipt'}
+            {confirming ? t('confirming') : t('confirmReceipt')}
           </button>
         </form>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <p className="text-xs text-gray-500 text-center">
-            By confirming, you acknowledge receipt of this QSL card. Your IP address and timestamp will be recorded for verification purposes.
+            {t('privacyNotice')}
           </p>
         </div>
       </div>
