@@ -38,7 +38,7 @@ function ConfirmContent() {
 
   useEffect(() => {
     if (!token || !signature) {
-      setError('Invalid confirmation link');
+      setError('missing_params'); // Use special error code for better UI handling
       setLoading(false);
       return;
     }
@@ -118,17 +118,51 @@ function ConfirmContent() {
   }
 
   if (error && !tokenInfo) {
+    const isMissingParams = error === 'missing_params';
+    
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-pink-100">
+      <div className={`min-h-screen flex items-center justify-center ${
+        isMissingParams 
+          ? 'bg-gradient-to-br from-blue-50 to-indigo-100' 
+          : 'bg-gradient-to-br from-red-50 to-pink-100'
+      }`}>
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
           <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-              <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+            <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${
+              isMissingParams ? 'bg-blue-100' : 'bg-red-100'
+            }`}>
+              {isMissingParams ? (
+                <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Error</h2>
-            <p className="text-gray-600 mb-6">{error}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {isMissingParams ? 'Confirmation Link Required' : 'Error'}
+            </h2>
+            <p className="text-gray-600 mb-4">
+              {isMissingParams ? (
+                <>
+                  This page requires a valid confirmation link to access.<br />
+                  Please use the link provided on your QSL card or in the email you received.
+                </>
+              ) : (
+                error
+              )}
+            </p>
+            {isMissingParams && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left">
+                <p className="text-sm text-blue-800 font-medium mb-1">What you need:</p>
+                <p className="text-xs text-blue-700">
+                  A confirmation link in the format:<br />
+                  <code className="bg-blue-100 px-2 py-1 rounded text-xs">/confirm?token=...&sig=...</code>
+                </p>
+              </div>
+            )}
             <a
               href="/"
               className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

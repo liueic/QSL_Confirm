@@ -27,6 +27,11 @@ export default function BatchOperationsPage() {
   const loadQsos = async () => {
     setLoading(true);
     try {
+      if (!supabase) {
+        console.error('Supabase client is not initialized. Please check your environment variables.');
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {

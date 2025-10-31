@@ -65,6 +65,27 @@ QSL_TOKEN_EXPIRY_DAYS=365
 NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
 ```
 
+### ⚠️ 重要：Supabase 密钥配置说明
+
+**不要使用 `SUPABASE_KEY` 环境变量！**
+
+Supabase 官方明确要求区分两种密钥：
+
+1. **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** - 匿名密钥（公开的）
+   - 从 Supabase Dashboard → Settings → API → `anon` `public` 获取
+   - 用于客户端代码，可以安全暴露
+   - 受 Row Level Security (RLS) 保护
+
+2. **`SUPABASE_SERVICE_ROLE_KEY`** - 服务角色密钥（私密的）
+   - 从 Supabase Dashboard → Settings → API → `service_role` `secret` 获取
+   - 仅用于服务端 API 路由，拥有完整权限
+   - **绝不能在客户端代码中使用或暴露**
+
+**为什么不用 `SUPABASE_KEY`？**
+- 变量名不明确，无法区分是哪种密钥
+- 容易误用导致安全风险
+- 不符合 Supabase 官方最佳实践
+
 **注意**：`NEXT_PUBLIC_APP_URL` 部署后会获得，可以先留空稍后更新。
 
 ## ✅ 部署后操作

@@ -17,6 +17,12 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
+    if (!supabase) {
+      setError('Supabase configuration is missing. Please check your environment variables.');
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
