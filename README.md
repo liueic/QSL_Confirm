@@ -120,6 +120,8 @@ ADMIN_PASSWORD=your-secure-admin-password
   - 系统在首次访问登录页面时会自动使用这些凭证创建管理员账户
   - 只会创建一个管理员用户
   - 请使用强密码保护管理员账户
+  - **忘记密码？** 可在登录页面点击"忘记密码？"通过邮件重置
+  - **无法重置？** 可使用管理员重置 API 强制重置（见下方说明）
 
 ### 3. 设置数据库
 
@@ -244,6 +246,70 @@ Content-Type: application/json
     "confirmed_at": "2024-01-01T12:00:00Z",
     "token": "ABCD-EFGH-IJ"
   }
+}
+```
+
+### 密码重置
+
+#### 请求密码重置邮件
+
+```http
+POST /api/auth/reset-password
+Content-Type: application/json
+
+{
+  "email": "admin@example.com"
+}
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "message": "如果该邮箱存在账户，密码重置邮件已发送。请检查您的邮箱。"
+}
+```
+
+**说明**:
+- 出于安全考虑，无论邮箱是否存在，都会返回成功消息
+- 密码重置链接会发送到指定邮箱
+- 需要在 Supabase 项目中配置邮件服务
+
+#### 管理员账户强制重置
+
+```http
+POST /api/auth/reset-admin
+```
+
+**说明**:
+- ⚠️ **危险操作**：会删除现有管理员账户并使用环境变量中的凭证重新创建
+- 需要确保 `ADMIN_EMAIL` 和 `ADMIN_PASSWORD` 环境变量已正确配置
+- 适用于忘记密码且无法通过邮件重置的情况
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "message": "管理员账户已成功重置",
+  "adminEmail": "admin@example.com",
+  "userId": "uuid"
+}
+```
+
+**检查重置状态**:
+```http
+GET /api/auth/reset-admin
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "adminConfigured": true,
+  "hasUsers": true,
+  "adminExists": true,
+  "canReset": true,
+  "message": "可以使用 POST 请求重置管理员账户"
 }
 ```
 
