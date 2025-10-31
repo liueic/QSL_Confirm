@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
-import { Baloo_2, Press_Start_2P } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import "./globals.css";
 
-// 🍬 圆润可爱字体 - Baloo 2
-const balooFont = Baloo_2({
-  variable: "--font-pixel-sans",
+// Professional body font - Inter
+const interFont = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
-// 🎮 像素字体 - Press Start 2P
-const pixelFont = Press_Start_2P({
-  variable: "--font-pixel-mono",
+// Professional heading font - Poppins
+const poppinsFont = Poppins({
+  variable: "--font-heading",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${balooFont.variable} ${pixelFont.variable} antialiased`}
+        className={`${interFont.variable} ${poppinsFont.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           {children}

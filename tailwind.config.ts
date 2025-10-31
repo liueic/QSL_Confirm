@@ -44,8 +44,15 @@ const config: Config = {
         '4xl': '2rem',
       },
       fontFamily: {
-        sans: ['var(--font-pixel-sans)', 'Baloo 2', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-pixel-mono)', 'monospace'],
+        sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-heading)', 'Poppins', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'heading-lg': ['28px', { lineHeight: '1.2', fontWeight: '600' }],
+        'heading': ['24px', { lineHeight: '1.3', fontWeight: '600' }],
+        'body': ['16px', { lineHeight: '1.5', fontWeight: '500' }],
+        'hint': ['14px', { lineHeight: '1.4', fontWeight: '400' }],
+        'hint-sm': ['13px', { lineHeight: '1.4', fontWeight: '400' }],
       },
       animation: {
         'sparkle': 'sparkle 2s ease-in-out infinite',
