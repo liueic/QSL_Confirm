@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import AuthGuard from '@/components/AuthGuard';
-import { Home, FileText, Key, ClipboardList, Zap, Settings, LogOut, Menu, X } from 'lucide-react';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
 
 export default function AdminLayout({
   children,
@@ -25,12 +25,12 @@ export default function AdminLayout({
   }, []);
 
   const navItems = [
-    { href: '/admin', label: '仪表盘', icon: Home },
-    { href: '/admin/qsos', label: 'QSO记录', icon: FileText },
-    { href: '/admin/tokens', label: '确认码', icon: Key },
-    { href: '/admin/logs', label: '日志', icon: ClipboardList },
-    { href: '/admin/batch', label: '批量操作', icon: Zap },
-    { href: '/admin/settings', label: '设置', icon: Settings },
+    { href: '/admin', label: '仪表盘' },
+    { href: '/admin/qsos', label: 'QSO记录' },
+    { href: '/admin/tokens', label: '确认码' },
+    { href: '/admin/logs', label: '日志' },
+    { href: '/admin/batch', label: '批量操作' },
+    { href: '/admin/settings', label: '设置' },
   ];
 
   const isActive = (href: string) => {
@@ -60,13 +60,10 @@ export default function AdminLayout({
             <div className="flex justify-between h-20">
               <div className="flex items-center">
                 <Link href="/admin" className="flex items-center space-x-3 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-candy-pink to-candy-purple rounded-2xl flex items-center justify-center shadow-lg border-3 border-white">
-                    <Zap className="w-7 h-7 text-white" strokeWidth={2.5} />
-                  </div>
                   <div>
                     <h1 className="text-xl font-heading font-semibold" style={{color: 'var(--text-primary)'}}>QSL.ADMIN</h1>
                     {myCallsign && (
-                      <p className="text-xs font-semibold" style={{color: 'var(--candy-purple)'}}>{myCallsign}</p>
+                      <p className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>{myCallsign}</p>
                     )}
                   </div>
                 </Link>
@@ -74,7 +71,6 @@ export default function AdminLayout({
                 {/* Desktop Navigation */}
                 <div className="hidden md:ml-8 md:flex md:space-x-2">
                   {navItems.map((item) => {
-                    const Icon = item.icon;
                     return (
                       <Link
                         key={item.href}
@@ -82,13 +78,10 @@ export default function AdminLayout({
                         className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                           isActive(item.href)
                             ? 'bg-gradient-to-r from-candy-pink to-candy-purple text-white border-3 border-white shadow-lg'
-                            : 'text-purple-600 hover:bg-white/80 border-2 border-transparent hover:border-candy-purple'
+                            : 'text-gray-900 hover:bg-white/80 border-2 border-transparent hover:border-candy-purple'
                         }`}
                       >
-                        <div className="flex items-center space-x-2">
-                          <Icon className="w-4 h-4" strokeWidth={2.5} />
-                          <span>{item.label}</span>
-                        </div>
+                        <span>{item.label}</span>
                       </Link>
                     );
                   })}
@@ -97,40 +90,35 @@ export default function AdminLayout({
 
               {/* Right side */}
               <div className="flex items-center space-x-3">
+                <ThemeSwitcher />
+
                 <Link 
                   href="/"
-                  className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-xl font-semibold text-sm transition-all border-2 border-candy-cyan"
-                  style={{color: 'var(--text-primary)'}}
+                  className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-xl font-semibold text-sm transition-all border-2 border-candy-cyan text-gray-900"
                 >
-                  <Home className="w-4 h-4" strokeWidth={2.5} />
                   <span>主页</span>
                 </Link>
 
                 {userEmail && (
                   <div className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-xl border-2 border-candy-mint">
                     <div className="w-2.5 h-2.5 bg-candy-mint rounded-full"></div>
-                    <span className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>{userEmail}</span>
+                    <span className="text-xs font-semibold text-gray-900">{userEmail}</span>
                   </div>
                 )}
 
                 <button
                   onClick={handleLogout}
-                  className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-xl font-semibold text-sm transition-all hover:bg-candy-pink hover:text-white border-2 border-candy-pink"
+                  className="hidden sm:flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-xl font-semibold text-sm transition-all hover:bg-candy-pink hover:text-white border-2 border-candy-pink text-gray-900"
                 >
-                  <LogOut className="w-4 h-4" strokeWidth={2.5} />
                   <span>退出</span>
                 </button>
 
                 {/* Mobile menu button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="md:hidden p-3 rounded-xl bg-white/80 border-2 border-candy-purple transition-all"
+                  className="md:hidden px-4 py-2 rounded-xl bg-white/80 border-2 border-candy-purple transition-all text-gray-900 font-semibold"
                 >
-                  {isMobileMenuOpen ? (
-                    <X className="w-6 h-6 text-candy-purple" strokeWidth={2.5} />
-                  ) : (
-                    <Menu className="w-6 h-6 text-candy-purple" strokeWidth={2.5} />
-                  )}
+                  {isMobileMenuOpen ? '关闭' : '菜单'}
                 </button>
               </div>
             </div>
@@ -141,7 +129,6 @@ export default function AdminLayout({
             <div className="md:hidden border-t-4 border-candy-purple bg-white/90 backdrop-blur-lg">
               <div className="px-3 pt-3 pb-4 space-y-2">
                 {navItems.map((item) => {
-                  const Icon = item.icon;
                   return (
                     <Link
                       key={item.href}
@@ -150,13 +137,10 @@ export default function AdminLayout({
                       className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all ${
                         isActive(item.href)
                           ? 'bg-gradient-to-r from-candy-pink to-candy-purple text-white border-2 border-white shadow-lg'
-                          : 'text-purple-600 bg-white/60 border-2 border-transparent hover:border-candy-purple'
+                          : 'text-gray-900 bg-white/60 border-2 border-transparent hover:border-candy-purple'
                       }`}
                     >
-                      <div className="flex items-center space-x-2">
-                        <Icon className="w-5 h-5" strokeWidth={2.5} />
-                        <span>{item.label}</span>
-                      </div>
+                      <span>{item.label}</span>
                     </Link>
                   );
                 })}
@@ -165,7 +149,6 @@ export default function AdminLayout({
                     onClick={handleLogout}
                     className="w-full flex items-center space-x-2 px-4 py-3 rounded-xl font-semibold bg-candy-pink/10 border-2 border-candy-pink text-candy-pink hover:bg-candy-pink hover:text-white transition-all"
                   >
-                    <LogOut className="w-5 h-5" strokeWidth={2.5} />
                     <span>退出</span>
                   </button>
                 </div>

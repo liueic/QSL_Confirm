@@ -107,7 +107,7 @@ export default async function QSOsPage() {
                           <div className="flex items-center space-x-2">
                             <code className="text-xs bg-gray-100 px-2 py-1 rounded">{token.token}</code>
                             {token.used && (
-                              <span className="text-xs text-green-600">✓</span>
+                              <span className="text-xs text-green-600 font-semibold">已使用</span>
                             )}
                           </div>
                         ) : (

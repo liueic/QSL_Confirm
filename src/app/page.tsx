@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, QrCode, Lock, Zap, FileText, Settings } from 'lucide-react';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
 
 export default function Home() {
   const router = useRouter();
@@ -35,6 +36,11 @@ export default function Home() {
     <div className="min-h-screen relative overflow-hidden" style={{background: 'var(--color-bg)'}}>
       {/* Subtle background decoration */}
       <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
+
+      {/* Theme Switcher */}
+      <div className="fixed top-4 right-4 z-20">
+        <ThemeSwitcher />
+      </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-16">
         {/* Header */}

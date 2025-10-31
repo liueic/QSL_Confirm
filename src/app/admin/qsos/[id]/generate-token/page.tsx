@@ -265,7 +265,7 @@ export default function GenerateTokenPage() {
                     onClick={handleCopyLink}
                     className="px-4 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg hover:bg-gray-300"
                   >
-                    {copied ? '✓ Copied' : 'Copy'}
+                    {copied ? '已复制' : '复制'}
                   </button>
                 </div>
               </div>
