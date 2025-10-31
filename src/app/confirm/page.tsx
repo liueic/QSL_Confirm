@@ -108,13 +108,16 @@ function ConfirmContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 relative overflow-hidden">
+        <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
+        <div className="fixed inset-0 stars pointer-events-none"></div>
+        <div className="card-candy border-candy-purple p-8 max-w-md w-full bg-white/90 relative z-10">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-8 bg-gradient-to-r from-candy-pink to-candy-purple rounded-2xl w-3/4 mx-auto"></div>
+            <div className="h-4 bg-candy-blue rounded-xl"></div>
+            <div className="h-4 bg-candy-purple rounded-xl w-5/6"></div>
           </div>
+          <p className="text-center text-base font-bold mt-4" style={{color: 'var(--text-secondary)'}}>✨ Loading... ✨</p>
         </div>
       </div>
     );
@@ -233,137 +236,143 @@ function ConfirmContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
-      {/* Grid background */}
-      <div className="fixed inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)',
-          backgroundSize: '50px 50px'
-        }} />
-      </div>
-      <div className="relative z-10 bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl shadow-2xl p-8 max-w-lg w-full">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-cyan-100 py-12 px-4 relative overflow-hidden">
+      {/* 🎨 装饰背景 */}
+      <div className="fixed inset-0 bg-pixel-dots pointer-events-none"></div>
+      <div className="fixed inset-0 stars pointer-events-none"></div>
+      
+      <div className="relative z-10 card-candy border-candy-pink p-8 max-w-lg w-full bg-white/90">
         <div className="flex justify-end mb-4">
           <div className="flex items-center space-x-2">
             <button
               onClick={() => changeLanguage('zh')}
               disabled={isPending}
-              className="px-3 py-1 text-sm rounded-md transition-colors bg-slate-700 text-gray-300 hover:bg-slate-600 disabled:opacity-50"
+              className="px-4 py-2 text-sm rounded-xl font-bold transition-all bg-white/80 border-2 border-candy-purple hover:bg-candy-purple hover:text-white disabled:opacity-50"
+              style={{color: 'var(--text-primary)'}}
             >
-              中文
+              🇨🇳 中文
             </button>
             <button
               onClick={() => changeLanguage('en')}
               disabled={isPending}
-              className="px-3 py-1 text-sm rounded-md transition-colors bg-slate-700 text-gray-300 hover:bg-slate-600 disabled:opacity-50"
+              className="px-4 py-2 text-sm rounded-xl font-bold transition-all bg-white/80 border-2 border-candy-blue hover:bg-candy-blue hover:text-white disabled:opacity-50"
+              style={{color: 'var(--text-primary)'}}
             >
-              English
+              🇬🇧 English
             </button>
           </div>
         </div>
         <div className="text-center mb-8">
-          <div className="inline-block mb-4 px-4 py-2 bg-purple-500/20 border border-purple-500/50 rounded-lg backdrop-blur-sm">
-            <span className="text-purple-300 text-sm font-mono tracking-wider">QSL CONFIRMATION</span>
+          <div className="inline-block mb-4 px-6 py-3 bg-white/80 border-4 border-candy-purple rounded-2xl shadow-lg animate-wiggle">
+            <span className="text-candy-purple font-[family-name:var(--font-pixel-mono)] text-xs tracking-wider">✨ QSL CONFIRMATION ✨</span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <h1 className="text-3xl font-black mb-2" style={{color: 'var(--text-primary)'}}>
             {t('title')}
           </h1>
-          <p className="text-gray-400">
+          <p className="text-lg font-bold" style={{color: 'var(--text-secondary)'}}>
             {t('subtitle')}
           </p>
         </div>
 
         {tokenInfo && (
-          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold text-white mb-4">{t('qsoDetails')}</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-400">{t('callsign')}:</span>
-                <span className="font-semibold text-purple-300 font-mono">{tokenInfo.qso.callsign_worked}</span>
+          <div className="card-candy border-candy-blue p-6 mb-6 bg-gradient-to-br from-candy-blue/10 to-candy-cyan/10">
+            <h3 className="font-black text-xl mb-4 flex items-center" style={{color: 'var(--text-primary)'}}>
+              <span className="mr-2">📻</span>
+              {t('qsoDetails')}
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between p-3 bg-white/50 rounded-xl">
+                <span className="font-bold" style={{color: 'var(--text-secondary)'}}>{t('callsign')}:</span>
+                <span className="font-black text-candy-pink font-[family-name:var(--font-pixel-mono)] text-sm">{tokenInfo.qso.callsign_worked}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">{t('dateTime')}:</span>
-                <span className="font-semibold text-white">
+              <div className="flex justify-between p-3 bg-white/50 rounded-xl">
+                <span className="font-bold" style={{color: 'var(--text-secondary)'}}>{t('dateTime')}:</span>
+                <span className="font-bold" style={{color: 'var(--text-primary)'}}>
                   {new Date(tokenInfo.qso.datetime).toLocaleString()}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">{t('band')}:</span>
-                <span className="font-semibold text-white">{tokenInfo.qso.band}</span>
+              <div className="flex justify-between p-3 bg-white/50 rounded-xl">
+                <span className="font-bold" style={{color: 'var(--text-secondary)'}}>{t('band')}:</span>
+                <span className="font-bold" style={{color: 'var(--text-primary)'}}>{tokenInfo.qso.band}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">{t('mode')}:</span>
-                <span className="font-semibold text-white">{tokenInfo.qso.mode}</span>
+              <div className="flex justify-between p-3 bg-white/50 rounded-xl">
+                <span className="font-bold" style={{color: 'var(--text-secondary)'}}>{t('mode')}:</span>
+                <span className="font-bold" style={{color: 'var(--text-primary)'}}>{tokenInfo.qso.mode}</span>
               </div>
               {tokenInfo.qso.frequency && (
-                <div className="flex justify-between">
-                  <span className="text-gray-400">{t('frequency')}:</span>
-                  <span className="font-semibold text-white">{tokenInfo.qso.frequency} MHz</span>
+                <div className="flex justify-between p-3 bg-white/50 rounded-xl">
+                  <span className="font-bold" style={{color: 'var(--text-secondary)'}}>{t('frequency')}:</span>
+                  <span className="font-bold" style={{color: 'var(--text-primary)'}}>{tokenInfo.qso.frequency} MHz</span>
                 </div>
               )}
             </div>
           </div>
         )}
 
-        <form onSubmit={handleConfirm} className="space-y-4">
+        <form onSubmit={handleConfirm} className="space-y-5">
           {tokenInfo?.requires_pin && (
             <div>
-              <label htmlFor="pin" className="block text-sm font-medium text-gray-300 mb-1">
-                {t('pinRequired')} *
+              <label htmlFor="pin" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+                🔐 {t('pinRequired')} *
               </label>
               <input
                 type="text"
                 id="pin"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border-4 border-candy-purple rounded-2xl font-bold placeholder-purple-300 focus:border-candy-pink transition-all"
+                style={{color: 'var(--text-primary)'}}
                 placeholder={t('pinPlaceholder')}
                 maxLength={6}
                 required
               />
-              <p className="mt-1 text-xs text-gray-500">
-                {t('pinHelp')}
+              <p className="mt-2 text-sm font-bold" style={{color: 'var(--text-secondary)'}}>
+                💡 {t('pinHelp')}
               </p>
             </div>
           )}
 
           <div>
-            <label htmlFor="callsign" className="block text-sm font-medium text-gray-300 mb-1">
-              {t('yourCallsign')}
+            <label htmlFor="callsign" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+              📡 {t('yourCallsign')}
             </label>
             <input
               type="text"
               id="callsign"
               value={callsign}
               onChange={(e) => setCallsign(e.target.value.toUpperCase())}
-              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono uppercase"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-blue rounded-2xl font-bold placeholder-blue-300 focus:border-candy-cyan transition-all font-[family-name:var(--font-pixel-mono)] text-sm uppercase"
+              style={{color: 'var(--text-primary)'}}
               placeholder={t('callsignPlaceholder')}
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              {t('yourEmail')}
+            <label htmlFor="email" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+              📧 {t('yourEmail')}
             </label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-mint rounded-2xl font-bold placeholder-green-300 focus:border-candy-cyan transition-all"
+              style={{color: 'var(--text-primary)'}}
               placeholder={t('emailPlaceholder')}
             />
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
-              {t('message')}
+            <label htmlFor="message" className="block text-sm font-bold mb-2" style={{color: 'var(--text-primary)'}}>
+              💬 {t('message')}
             </label>
             <textarea
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 bg-white border-4 border-candy-yellow rounded-2xl font-bold placeholder-yellow-300 focus:border-candy-orange transition-all resize-none"
+              style={{color: 'var(--text-primary)'}}
               placeholder={t('messagePlaceholder')}
             />
           </div>
@@ -377,15 +386,15 @@ function ConfirmContent() {
           <button
             type="submit"
             disabled={confirming}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            className="btn-candy w-full py-4 bg-gradient-to-r from-candy-pink to-candy-purple border-candy-pink text-white font-black text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {confirming ? t('confirming') : t('confirmReceipt')}
+            {confirming ? `🔄 ${t('confirming')}` : `🎉 ${t('confirmReceipt')}`}
           </button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-slate-700">
-          <p className="text-xs text-gray-500 text-center">
-            {t('privacyNotice')}
+        <div className="mt-8 pt-6 border-t-4 border-dashed border-candy-purple/30">
+          <p className="text-sm font-bold text-center" style={{color: 'var(--text-secondary)'}}>
+            🔒 {t('privacyNotice')}
           </p>
         </div>
       </div>

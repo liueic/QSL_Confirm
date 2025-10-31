@@ -1,75 +1,264 @@
 @import "tailwindcss";
 
+/* 🍬 糖果色调色板 - Candy Color Palette */
 :root {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --accent-purple: #a855f7;
-  --accent-pink: #ec4899;
+  /* 主要糖果色 */
+  --candy-pink: #ff6ec7;
+  --candy-purple: #bd93ff;
+  --candy-blue: #6eb5ff;
+  --candy-cyan: #50e3c2;
+  --candy-yellow: #ffd93d;
+  --candy-orange: #ffb74d;
+  --candy-mint: #b4f8c8;
+  --candy-peach: #ffa6c9;
+  
+  /* 背景色 */
+  --bg-primary: #fff5f7;
+  --bg-secondary: #ffe6f0;
+  --bg-tertiary: #fdf0ff;
+  
+  /* 文字色 */
+  --text-primary: #6b4e71;
+  --text-secondary: #9775a5;
+  --text-light: #c4a4d1;
+  
+  /* 强调色 */
+  --accent-primary: var(--candy-pink);
+  --accent-secondary: var(--candy-purple);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #f1f5f9;
-  }
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-pixel-sans);
+  --font-mono: var(--font-pixel-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Baloo 2', 'Comic Sans MS', cursive, system-ui;
+  image-rendering: -webkit-optimize-contrast;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* 🎨 像素风格滚动条 - Pixel Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: var(--bg-secondary);
+  border: 3px solid var(--candy-purple);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
-  border-radius: 5px;
+  background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+  border-radius: 10px;
+  border: 3px solid var(--bg-secondary);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.5),
+              inset -2px -2px 0 rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: linear-gradient(135deg, var(--candy-purple), var(--candy-blue));
 }
 
-/* Geek-style glow effect for focus states */
+/* 🔲 像素边框效果 - Pixel Border */
+.pixel-border {
+  border: 4px solid currentColor;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.15),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.4),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.pixel-border-thick {
+  border: 6px solid currentColor;
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.2),
+    inset 3px 3px 0 rgba(255, 255, 255, 0.5),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 💡 糖果色焦点效果 - Candy Focus */
 input:focus,
 textarea:focus,
 select:focus {
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.5);
+  outline: none;
+  border-color: var(--candy-purple) !important;
+  box-shadow: 
+    0 0 0 4px rgba(189, 147, 255, 0.3),
+    4px 4px 0 var(--candy-pink),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
 
-/* Smooth animations */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+/* 🎯 按钮样式 - Cute Button */
+.btn-candy {
+  border: 4px solid;
+  border-radius: 16px;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.2),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.5),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Loading animation */
-@keyframes pulse-glow {
+.btn-candy:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.25),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.6),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-candy:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 
+    2px 2px 0 rgba(0, 0, 0, 0.2),
+    inset 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 🍭 卡片样式 - Candy Card */
+.card-candy {
+  border: 4px solid;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.15),
+    inset 2px 2px 0 rgba(255, 255, 255, 0.8),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* ✨ 闪烁动画 - Sparkle */
+@keyframes sparkle {
   0%, 100% {
+    transform: scale(1) rotate(0deg);
     opacity: 1;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
   }
   50% {
-    opacity: 0.5;
-    box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.8;
   }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* 🌈 彩虹跳动 - Bounce Rainbow */
+@keyframes bounce-rainbow {
+  0%, 100% {
+    transform: translateY(0);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px);
+    filter: hue-rotate(180deg);
+  }
+}
+
+.animate-bounce-rainbow {
+  animation: bounce-rainbow 1.5s ease-in-out infinite;
+}
+
+/* 💖 脉冲发光 - Candy Pulse */
+@keyframes candy-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(255, 110, 199, 0.5),
+      0 0 40px rgba(189, 147, 255, 0.3),
+      inset 2px 2px 0 rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(255, 110, 199, 0.8),
+      0 0 60px rgba(189, 147, 255, 0.5),
+      inset 2px 2px 0 rgba(255, 255, 255, 0.6);
+  }
+}
+
+.animate-candy-pulse {
+  animation: candy-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 🎪 摇摆动画 - Wiggle */
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+/* 🔮 渐变背景 - Gradient Background */
+.bg-candy-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--candy-pink) 0%,
+    var(--candy-purple) 25%,
+    var(--candy-blue) 50%,
+    var(--candy-cyan) 75%,
+    var(--candy-mint) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 🎨 像素点图案背景 - Pixel Dots Pattern */
+.bg-pixel-dots {
+  background-image: 
+    radial-gradient(circle, var(--candy-pink) 2px, transparent 2px),
+    radial-gradient(circle, var(--candy-purple) 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  opacity: 0.15;
+}
+
+/* ⭐ 星星装饰 - Stars */
+.stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--candy-yellow), transparent),
+    radial-gradient(2px 2px at 60px 70px, var(--candy-pink), transparent),
+    radial-gradient(1px 1px at 50px 50px, var(--candy-cyan), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--candy-purple), transparent),
+    radial-gradient(2px 2px at 90px 10px, var(--candy-orange), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  opacity: 0.6;
+  animation: stars-twinkle 3s ease-in-out infinite;
+}
+
+@keyframes stars-twinkle {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
